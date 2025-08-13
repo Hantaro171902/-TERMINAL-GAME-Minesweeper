@@ -1,4 +1,5 @@
 #include "minesweeper.hpp"
+#include "ultils.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
@@ -19,4 +20,15 @@ bool Minesweeper::isMine(int row, int col, const vector<vector<char>>& board) co
     return isValid(row, col) && board[row][col] == '*';
 }
 
+void Minesweeper::makeMove(int &x, int &y) const {
+    while (true) {
+        cout << "Enter your move [row] [column] -> ";
+        cin >> x >> y;
+        if (x < side && y < side) return;
+    }
+}
 
+void Minesweeper::printBoard(const std::vector<vector<char>>& board) const {
+    clearTerminal();
+    
+}
