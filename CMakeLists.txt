@@ -17,7 +17,7 @@ set(SOURCES
 
 set(HEADERS
     src/headers/ultils.hpp
-    src/headers/minesweeper.cpp
+    src/headers/minesweeper.hpp
     src/headers/color.hpp
 )
 

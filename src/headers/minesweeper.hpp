@@ -18,7 +18,7 @@ private:
 
     std::vector<std::vector<char>> realBoard; // Board to hold mine counts
     std::vector<std::vector<char>> myBoard; // Board to display to the player
-    std::vector<std::vector<int,int>> mines; // Track revealed cells
+    std::vector<std::pair<int,int>> mines; // Track revealed cells
 
     bool isValid(int row, int col) const;
     bool isMine(int row, int col, const std::vector<std::vector<char>>& board) const;
@@ -29,6 +29,6 @@ private:
     void initialiseBoards();
     void cheatMines() const;
     void replaceMine(int row, int col);
-    int countAdjacentMines(int row, int col, const std::vector<std::vector<char>>& board) const;
+    int countAdjacentMines(int row, int col) const;
 
-}
+};

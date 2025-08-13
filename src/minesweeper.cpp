@@ -51,9 +51,9 @@ int Minesweeper::countAdjacentMines(int row, int col) const {
     int dr[] = {-1, 1, 0, 0, -1, -1, 1, 1};
     int dc[] = {0, 0, -1, 1, -1, 1, -1, 1};
     for (int i = 0; i < 8; i++) {
-        int newRow = row + dr[i];
-        int newCol = col + dc[i];
-        if (isMine(newRow, newCol, board)) count++;
+        int nr = row + dr[i];
+        int nc = col + dc[i];
+        if (isMine(nr, nc, myBoard)) count++;
     }
     return count;
 }
@@ -106,16 +106,21 @@ void Minesweeper::placeMines() {
     }
 }
 
-void Minesweeper::initializeBoards() {
+void Minesweeper::initialiseBoards() {
     srand(time(NULL));
     realBoard.assign(side, vector<char>(side, '-'));
     myBoard.assign(side, vector<char>(side, '-'));
 }
 
 void Minesweeper::cheatMines() const {
+    cout << "The mine locations are - " << endl;
+    printBoard(realBoard);
+}
+
+void Minesweeper::replaceMine(int row, int col) {
     for (int i = 0; i < side; i++) {
         for (int j = 0; j < side; j++) {
-            if (realBoard[i][j] == '*') {
+            if (realBoard[i][j] != '*') {
                 realBoard[i][j] = '*';
                 realBoard[row][col] = '-';
                 return;
@@ -133,11 +138,11 @@ void Minesweeper::chooseDifficulty() {
     int choice;
     cin >> choice;
     if (choice == 0) {
-        side = 9; minesCount = 10;
+        side = 9; mineCount = 10;
     } else if (choice == 1) {
-        side = 16; minesCount = 40;
+        side = 16; mineCount = 40;
     } else if (choice == 2) {
-        side = 24; minesCount = 99;
+        side = 24; mineCount = 99;
     } else {
         exit(0);
     }
@@ -171,6 +176,4 @@ void Minesweeper::play() {
             gameOver = true;
         } 
     }
-
-    
 }
