@@ -15,19 +15,15 @@ A fully playable **MineSweeper game** built in **C++**, featuring **Object-Orien
 
 ## 🖼 Demo
 
-### Level 0
+### Level Easy
+<img src="assets/level0.gif" width="500"/>
 
-![Minesweeper - level 0](assets/level-0.gif)
+### Level Medium
+<img src="assets/level1.gif" width="500"/>
 
----
-### Level 1
+### Level Hard
+<img src="assets/level2.gif" width="500"/>
 
-![Minesweeper - level 1](assets/level-1.gif)
-
----
-### Level 2
-
-![Minesweeper - level 2](assets/level-2.gif)
 
 ---
 
