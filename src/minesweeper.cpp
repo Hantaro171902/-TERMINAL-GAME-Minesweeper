@@ -147,18 +147,7 @@ bool Minesweeper::playMinesUntil(int row, int col) {
 
 void Minesweeper::placeMines() {
     vector<bool> mark(side * side, false);
-    int placed = 0;
-    while (placed < mineCount) {
-        int random = rand() % (side * side);
-        int x = random / side;
-        int y = random % side;
-        if (!mark[random]) {
-            mines.push_back({x, y});
-            realBoard[x][y] = '*';
-            mark[random] = true;
-            placed++;
-        }
-    }
+    
 }
 
 void Minesweeper::initialiseBoards() {
@@ -188,7 +177,9 @@ void Minesweeper::chooseDifficulty() {
     clearScreen();
     cout << "\n\t\t\t\t\t\t\t\tMINESWEEPER";
     cout << "\n\n\t\t\t\t\t\tCHOOSE DIFFICULTY LEVEL : ";
-    cout << "\n\n\t\t\t\t\t\t0.BEGINNER\n\t\t\t\t\t\t1.INTERMEDIATE\n\t\t\t\t\t\t2.ADVANCED";
+    cout << "\n\n\t\t\t\t\t\t0.EASY";
+    cout << "\n\t\t\t\t\t\t1.MEDIUM";
+    cout << "\n\t\t\t\t\t\t2.HARD";
     cout << "\n\n\t\t\t\t\t\tENTER CHOICE (0-2) : ";
     int choice;
     cin >> choice;
