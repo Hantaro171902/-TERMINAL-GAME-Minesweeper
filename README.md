@@ -17,17 +17,17 @@ A fully playable **MineSweeper game** built in **C++**, featuring **Object-Orien
 
 ### Level 0
 
-![Minesweeper - level 0](https://github.com/user-attachments/assets/a3f225f4-e202-41f8-b713-88b053b971f2)
+![Minesweeper - level 0](src/assets/level-0.gif)
 
 ---
 ### Level 1
 
-![Minesweeper - level 1](https://github.com/user-attachments/assets/b2bb111f-62ff-47cd-8b9f-d9b56d6002f8)
+![Minesweeper - level 1](src/assets/level-1.gif)
 
 ---
 ### Level 2
 
-![Minesweeper - level 2](https://github.com/user-attachments/assets/90053d66-4269-46c2-91c2-b55e748d5b1f)
+![Minesweeper - level 2](src/assets/level-2.gif)
 
 ---
 
