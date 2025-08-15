@@ -1,12 +1,25 @@
 #include "minesweeper.hpp"
 #include "ultils.hpp"
+#include "color.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
 #include <cstring>
+#include <iomanip>
 
 using namespace std;
+
+#define RESET "\033[0m"
+#define BG_RED "\033[41m"
+#define BG_GREEN "\033[42m"
+#define BG_YELLOW "\033[43m"
+#define BG_BLUE "\033[44m"
+#define BG_MAGENTA "\033[45m"
+#define BG_CYAN "\033[46m"
+#define BG_WHITE "\033[47m"
+#define BG_BLACK "\033[40m"
+#define BG_GRAY "\033[100"
 
 Minesweeper::Minesweeper() : side(0), mineCount(0), movesLeft(0) {
     // srand(static_cast<unsigned int>(time(nullptr))); // Seed random number generator
@@ -22,27 +35,68 @@ bool Minesweeper::isMine(int row, int col, const vector<vector<char>>& board) co
 
 void Minesweeper::makeMove(int &x, int &y) const {
     while (true) {
+        cout << endl;
         cout << "Enter your move [row] [column] -> ";
         cin >> x >> y;
         if (x < side && y < side) return;
     }
 }
 
-void Minesweeper::printBoard(const std::vector<vector<char>>& board) const {
+void Minesweeper::printBoard(const vector<vector<char>>& board) const {
     clearTerminal();
-    printf("\n\n\t\t\t    ");
-    for (int i = 0; i < side; i++)
-        printf("%s", (i > 9) ? " " : "  ");
-    printf("\n\t\t\t    ");
-    for (int i = 0; i < side; i++)
-        printf("%d ", i % 10);
-    printf("\n\n");
 
-    for (int i = 0; i < side; i++) {
-        printf("\t\t\t    ");
-        for (int j = 0; j < side; j++)
-            printf("%c ", board[i][j]);
-        printf(" %2d\n", i);
+    setTextColor(32);
+
+    cout << R"(
+                            *                                                             
+                            (  `                                                            
+                            )\))(   (            (      (  (      (    (           (   (    
+                            ((_)()\  )\   (      ))\ (   )\))(    ))\  ))\ `  )    ))\  )(   
+                            (_()((_)((_)  )\ )  /((_))\ ((_)()\  /((_)/((_)/(/(   /((_)(()\  
+                            |  \/  | (_) _(_/( (_)) ((_)_(()((_)(_)) (_)) ((_)_\ (_))   ((_) 
+                            | |\/| | | || ' \))/ -_)(_-<\ V  V // -_)/ -_)| '_ \)/ -_) | '_| 
+                            |_|  |_| |_||_||_| \___|/__/ \_/\_/ \___|\___|| .__/ \___| |_|   
+                                                                        |_|
+
+    )";
+    resetTextColor();
+    int i, j = 0;
+
+    cout << "\n\n\t\t\t    " << setw(2);
+    for (i = 0; i < side; i++)
+        cout << (i > 9 ? "  " : "");
+
+    // Column
+    cout << "\n\t\t\t    ";
+    for (i = 0; i < side; i++) {
+        cout << " " << i%10 << setw(2);
+        
+    }
+       
+    cout << "\n\n";
+
+    for (i = 0; i < side; i++) {
+        cout << "\t\t\t " << setw(2) << i << " ";
+        
+        for (j = 0; j < side; j++) {
+            char cell = board[i][j];
+            string color;
+
+            switch(cell) {
+                case '1': color = BG_BLUE; break;
+                case '2': color = BG_GREEN; break;
+                case '3': color = BG_RED; break;
+                case '4': color = BG_MAGENTA; break;
+                case '5': color = BG_CYAN; break;
+                case '6': color = BG_YELLOW; break;
+                case '*': color = BG_RED; break; // mine
+                case '-': color = BG_BLACK; break; // unrevealed
+                default:  color = BG_WHITE; break; // empty space
+            }
+
+            cout << color << " " << cell << " " << RESET;
+        }
+        cout << endl;
     }
 }
 
@@ -148,32 +202,67 @@ void Minesweeper::chooseDifficulty() {
     }
 }
 
+
 void Minesweeper::play() {
-    bool gameOver = false;
-    movesLeft = side * side - mineCount;
-    mines.clear();
+    bool exitGame = false;
+    while (!exitGame) {
+        chooseDifficulty(); // Always allow difficulty selection before each game
 
-    initialiseBoards();
-    placeMines();
+        bool gameOver = false;
+        movesLeft = side * side - mineCount;
+        mines.clear();
 
-    int currentMoveIndex = 0;
-    while (!gameOver) {
-        cout << "Current Status of Board : " << endl;
-        printBoard(myBoard);
+        initialiseBoards();
+        placeMines();
 
-        int x, y;
-        makeMove(x, y);
+        int currentMoveIndex = 0;
+        while (!gameOver) {
+            cout << "Current Status of Board : " << endl;
+            printBoard(myBoard);
 
-        if (currentMoveIndex == 0 && isMine(x, y, realBoard)) {
-            replaceMine(x, y);
+            cout << endl;
+
+            cout << "Enter your move [row] [column] or R (restart) or Q (quit): ";
+            string input;
+            cin >> input;
+
+            if (input == "R" || input == "r") {
+                cout << "Restarting game..." << endl;
+                gameOver = true; // Break inner loop to restart
+                continue;
+            }
+            if (input == "Q" || input == "q") {
+                cout << "Quitting game..." << endl;
+                exitGame = true;
+                break;
+            }
+
+            int x, y;
+            try {
+                x = stoi(input);
+                cin >> y;
+            } catch (...) {
+                cout << "Invalid input. Please enter row and column numbers." << endl;
+                continue;
+            }
+
+            if (currentMoveIndex == 0 && isMine(x, y, realBoard)) {
+                replaceMine(x, y);
+            }
+
+            bool moveResult = playMinesUntil(x, y);
+            currentMoveIndex++;
+
+            // Check win after move
+            if (movesLeft == 0) {
+                cout << "You Won!" << endl;
+                gameOver = true;
+            }
+
+            // If moveResult is true, game over (mine hit)
+            if (moveResult) {
+                gameOver = true;
+            }
         }
-
-        gameOver = playMinesUntil(x, y);
-        currentMoveIndex++;
-
-        if (!gameOver && movesLeft == 0) {
-            cout << "You Won!" << endl;
-            gameOver = true;
-        } 
     }
 }
