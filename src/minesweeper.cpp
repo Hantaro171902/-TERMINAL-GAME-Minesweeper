@@ -147,7 +147,8 @@ bool Minesweeper::playMinesUntil(int row, int col) {
 
 void Minesweeper::placeMines() {
     vector<bool> mark(side * side, false);
-    for (int i = 0; i < mineCount; i++) {
+    int placed = 0;
+    while (placed < mineCount) {
         int random = rand() % (side * side);
         int x = random / side;
         int y = random % side;
@@ -155,7 +156,7 @@ void Minesweeper::placeMines() {
             mines.push_back({x, y});
             realBoard[x][y] = '*';
             mark[random] = true;
-            i++;
+            placed++;
         }
     }
 }
