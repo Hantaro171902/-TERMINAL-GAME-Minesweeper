@@ -65,10 +65,8 @@ A fully playable **MineSweeper game** built in **C++**, featuring **Object-Orien
    |  Yes    |      | No
    v         |      v
 +------+     |  +----------------------+
-| Quit |<----+--| first move & mine?  |
-+------+        | (currentMoveIndex==0 |
-                |  && isMine(...))     |
-                +----------+-----------+
+| Quit |<----+--| first move & mine?   |
++------+        +----------+-----------+
                            | Yes
                            v
                  +-------------------+
@@ -79,11 +77,6 @@ A fully playable **MineSweeper game** built in **C++**, featuring **Object-Orien
                  +-------------------+
                  | playMinesUntil    |
                  |     (x, y)        |
-                 +---------+---------+
-                           |
-                           v
-                 +-------------------+
-                 | currentMoveIndex++|
                  +---------+---------+
                            |
                            v
